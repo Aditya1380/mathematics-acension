@@ -1,0 +1,376 @@
+{
+ "v": 1,
+ "skills": {
+  "order": {
+   "learned": true,
+   "box": 3,
+   "due": 1792996965873,
+   "att": 18,
+   "cor": 16
+  },
+  "fractions": {
+   "learned": true,
+   "box": 3,
+   "due": 1792996913888,
+   "att": 11,
+   "cor": 9
+  },
+  "percent": {
+   "learned": true,
+   "box": 3,
+   "due": 1792998062664,
+   "att": 17,
+   "cor": 12
+  },
+  "exponents": {
+   "learned": true,
+   "box": 3,
+   "due": 1792997033258,
+   "att": 12,
+   "cor": 10
+  },
+  "linear": {
+   "learned": true,
+   "box": 3,
+   "due": 1792996022498,
+   "att": 9,
+   "cor": 7
+  },
+  "slope": {
+   "learned": true,
+   "box": 2,
+   "due": 1792828392398,
+   "att": 18,
+   "cor": 9
+  },
+  "quadratics": {
+   "learned": true,
+   "box": 3,
+   "due": 1792997496114,
+   "att": 11,
+   "cor": 7
+  },
+  "logs": {
+   "learned": true,
+   "box": 3,
+   "due": 1792995954892,
+   "att": 12,
+   "cor": 10
+  },
+  "systems": {
+   "learned": true,
+   "box": 3,
+   "due": 1792996864736,
+   "att": 11,
+   "cor": 8
+  }
+ },
+ "journal": [
+  {
+   "t": 1792742662564,
+   "skill": "systems",
+   "q": "Solve the system &nbsp; −<i>x</i> − 3<i>y</i> = 24<br>−<i>x</i> + 6<i>y</i> = −30",
+   "your": "66,6",
+   "ans": "<i>x</i> = −6, <i>y</i> = −6",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792741899397,
+   "skill": "slope",
+   "q": "A linear function has f(−3) = −17 and f(3) = 13. Find f(8).",
+   "your": "0",
+   "ans": "38",
+   "conf": "sure",
+   "note": "I am almost getting there."
+  },
+  {
+   "t": 1792741793833,
+   "skill": "slope",
+   "q": "A linear function has f(3) = 4 and f(−6) = −32. Find f(8).",
+   "your": "5",
+   "ans": "24",
+   "conf": "sure",
+   "note": "got till the second step right."
+  },
+  {
+   "t": 1792741374518,
+   "skill": "slope",
+   "q": "Find the slope of the line through &nbsp; (−7, 6) and (4, 2)",
+   "your": "-4/3",
+   "ans": "−<span class=\"fr\"><span>4</span><span>11</span></span>",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792741308872,
+   "skill": "slope",
+   "q": "A linear function has f(0) = −1 and f(8) = 7. Find f(−1).",
+   "your": "0",
+   "ans": "−2",
+   "conf": "sure",
+   "note": "I am weak in these type of question."
+  },
+  {
+   "t": 1792739066832,
+   "skill": "percent",
+   "q": "A price rises by 25%, then falls by 25%. What is the overall percent change? (Negative = decrease.)",
+   "your": "-0.0625",
+   "ans": "−6.25",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792737348742,
+   "skill": "slope",
+   "q": "A linear function has f(3) = 1 and f(−2) = −9. Find f(−1).",
+   "your": "-1",
+   "ans": "−7",
+   "conf": "sure",
+   "note": "I am not good in these type of question and"
+  },
+  {
+   "t": 1792650598554,
+   "skill": "quadratics",
+   "q": "Solve for x &nbsp; 2<i>x</i><sup>2</sup> − 2<i>x</i> − 60 = 0",
+   "your": "1,-1",
+   "ans": "<i>x</i> = −5 or <i>x</i> = 6",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792650484004,
+   "skill": "slope",
+   "q": "Find the y-intercept b of the line through &nbsp; (−6, 4) and (2, −4)",
+   "your": "-6",
+   "ans": "−2",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792650038843,
+   "skill": "quadratics",
+   "q": "What is the minimum value of y? &nbsp; y = <i>x</i><sup>2</sup> + 2<i>x</i> − 3",
+   "your": "-1",
+   "ans": "−4",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792649992235,
+   "skill": "slope",
+   "q": "What is the slope of any line perpendicular to &nbsp; y = −<i>x</i>",
+   "your": "-1",
+   "ans": "1",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792649807279,
+   "skill": "percent",
+   "q": "After a 25% increase, a price is 300. What was the original price?",
+   "your": "120",
+   "ans": "240",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792649774793,
+   "skill": "linear",
+   "q": "Solve for x &nbsp; −3<i>x</i> − 7 = −6<i>x</i> + 14",
+   "your": "3",
+   "ans": "7",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792649414882,
+   "skill": "systems",
+   "q": "Solve the system &nbsp; −3<i>x</i> − 6<i>y</i> = 6<br>6<i>x</i> + 4<i>y</i> = 20",
+   "your": "0,-1",
+   "ans": "<i>x</i> = 6, <i>y</i> = −4",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792649102784,
+   "skill": "exponents",
+   "q": "Simplify to a single power of x. What is the exponent? &nbsp; (<i>x</i><sup>−3</sup>)<sup>2</sup> · <i>x</i><sup>2</sup>",
+   "your": "-2",
+   "ans": "−4",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792648954560,
+   "skill": "percent",
+   "q": "A price rises by 10%, then falls by 10%. What is the overall percent change? (Negative = decrease.)",
+   "your": "1%",
+   "ans": "−1",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792647720592,
+   "skill": "systems",
+   "q": "Solve the system &nbsp; −<i>x</i> + 4<i>y</i> = 11<br>4<i>x</i> − 6<i>y</i> = −4",
+   "your": "4,5",
+   "ans": "<i>x</i> = 5, <i>y</i> = 4",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792646382684,
+   "skill": "logs",
+   "q": "Evaluate &nbsp; log<sub>10</sub>(<span class=\"fr\"><span>1</span><span>10</span></span>)",
+   "your": "2",
+   "ans": "−1",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792645283765,
+   "skill": "logs",
+   "q": "Solve for x &nbsp; log<sub>3</sub>(<i>x</i>) = 3",
+   "your": "3",
+   "ans": "27",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792586524013,
+   "skill": "quadratics",
+   "q": "Solve for x &nbsp; 2<i>x</i><sup>2</sup> − 18 = 0",
+   "your": "-18,1",
+   "ans": "<i>x</i> = 3 or <i>x</i> = −3",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792586464692,
+   "skill": "quadratics",
+   "q": "How many real solutions does this equation have? &nbsp; 3<i>x</i><sup>2</sup> + 18<i>x</i> + 27 = 0",
+   "your": "3",
+   "ans": "1",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792585105435,
+   "skill": "slope",
+   "q": "What is the slope of any line perpendicular to &nbsp; y = <span class=\"fr\"><span>2</span><span>5</span></span><i>x</i> + 9",
+   "your": "5/2",
+   "ans": "−<span class=\"fr\"><span>5</span><span>2</span></span>",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792585061931,
+   "skill": "slope",
+   "q": "What is the slope of any line perpendicular to &nbsp; y = 2<i>x</i> − 2",
+   "your": "1/2",
+   "ans": "−<span class=\"fr\"><span>1</span><span>2</span></span>",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792583236709,
+   "skill": "linear",
+   "q": "Solve for x &nbsp; <span class=\"fr\"><span><i>x</i></span><span>2</span></span> + 9 = 14",
+   "your": "5/2",
+   "ans": "10",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792583038390,
+   "skill": "exponents",
+   "q": "Simplify to a single power of x. What is the exponent? &nbsp; (<i>x</i><sup>−4</sup>)<sup>2</sup> · <i>x</i><sup>−4</sup>",
+   "your": "-4",
+   "ans": "−12",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792582684111,
+   "skill": "percent",
+   "q": "Split 33 in the ratio 8 : 3. What is the larger share?",
+   "your": "12",
+   "ans": "24",
+   "conf": "certain",
+   "note": ""
+  },
+  {
+   "t": 1792582441399,
+   "skill": "fractions",
+   "q": "Calculate (give an exact fraction) &nbsp; <span class=\"fr\"><span>4</span><span>6</span></span> ÷ <span class=\"fr\"><span>10</span><span>2</span></span>",
+   "your": "1/6",
+   "ans": "<span class=\"fr\"><span>2</span><span>15</span></span>",
+   "conf": "certain",
+   "note": ""
+  },
+  {
+   "t": 1792582417551,
+   "skill": "order",
+   "q": "Evaluate &nbsp; −7<sup>2</sup> + (−3)<sup>2</sup>",
+   "your": "40",
+   "ans": "−40",
+   "conf": "sure",
+   "note": ""
+  },
+  {
+   "t": 1792044710565,
+   "skill": "percent",
+   "q": "A price rises by 30%, then falls by 30%. What is the overall percent change? (Negative = decrease.)",
+   "your": "0",
+   "ans": "−9",
+   "conf": "sure",
+   "note": "I got bit confused in there"
+  },
+  {
+   "t": 1791981211367,
+   "skill": "fractions",
+   "q": "Calculate (give an exact fraction) &nbsp; <span class=\"fr\"><span>3</span><span>10</span></span> × <span class=\"fr\"><span>5</span><span>7</span></span>",
+   "your": "5/14",
+   "ans": "<span class=\"fr\"><span>3</span><span>14</span></span>",
+   "conf": "certain",
+   "note": ""
+  },
+  {
+   "t": 1791958606120,
+   "skill": "order",
+   "q": "Evaluate &nbsp; −15 − 8 × 1",
+   "your": "23",
+   "ans": "−23",
+   "conf": "certain",
+   "note": ""
+  }
+ ],
+ "calib": {
+  "guess": [
+   0,
+   0
+  ],
+  "sure": [
+   79,
+   108
+  ],
+  "certain": [
+   9,
+   13
+  ]
+ },
+ "cls": [
+  60,
+  61
+ ],
+ "exam": {
+  "passed": false,
+  "date": null,
+  "best": 0,
+  "tries": 0
+ },
+ "settings": {
+  "classify": true
+ }
+}

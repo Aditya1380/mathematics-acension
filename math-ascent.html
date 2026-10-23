@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math Ascent</title>
+<style>
+:root{
+  --bg:#0d1117; --panel:#151b24; --panel2:#1b2330; --line:#2a3443; --text:#e6edf3; --muted:#8b98a9;
+  --gold:#e9b949; --gold2:#f5d27a; --teal:#4fd1c5; --green:#4ade80; --red:#f87171; --amber:#fbbf24;
+  --math:"Cambria Math","STIX Two Math","Latin Modern Math",Georgia,serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 600px at 70% -10%,#1c2433 0%,var(--bg) 60%) fixed;background-color:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header.top{position:sticky;top:0;z-index:5;background:rgba(13,17,23,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .in{max-width:980px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-family:Georgia,serif;font-size:20px;letter-spacing:.5px;color:var(--gold2);display:flex;align-items:center;gap:8px}
+.brand .sig{font-family:var(--math);font-size:24px;color:var(--gold)}
+.nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.nav button{background:none;border:1px solid transparent;color:var(--muted);padding:6px 10px;border-radius:8px;cursor:pointer;font:inherit;font-size:14px}
+.nav button:hover{color:var(--text)} .nav button.on{color:var(--text);border-color:var(--line);background:var(--panel)}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px 60px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:14px 0}
+h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:.2px}
+h2{margin:.2em 0 .5em;font-size:24px}
+h3{margin:28px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font:600 13px system-ui}
+.btn{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1a1405;border:0;border-radius:10px;padding:10px 16px;font:600 15px system-ui;cursor:pointer}
+.btn:hover{filter:brightness(1.06)} .btn:disabled{opacity:.4;cursor:not-allowed;filter:none}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)} .btn.ghost:hover:not(:disabled){border-color:var(--gold)}
+.btn.sm{padding:6px 11px;font-size:13px}
+.btn.danger{background:transparent;border:1px solid rgba(248,113,113,.5);color:var(--red)}
+.link{background:none;border:0;color:var(--teal);cursor:pointer;font:inherit;padding:0}
+.hero{display:flex;gap:20px;align-items:center;padding:26px 0 6px}
+.badge{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;font-family:Georgia,serif;font-size:30px;color:var(--gold2);border:2px solid var(--gold);box-shadow:0 0 0 6px rgba(233,185,73,.08),inset 0 0 20px rgba(233,185,73,.15);flex:none}
+.hero .rk{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.hero .rn{font-family:Georgia,serif;font-size:32px;line-height:1.1}
+.hero .rt{color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px} .grid2 .card{margin:0}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}.math{font-size:23px!important}}
+.big{font-family:Georgia,serif;font-size:44px;color:var(--gold2);line-height:1}
+.muted{color:var(--muted)} .small{font-size:13px}
+.skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.skill{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.skill.locked{opacity:.45} .skill.next{border-color:rgba(233,185,73,.5)}
+.skill .sn{font-family:Georgia,serif;color:var(--gold);font-size:20px;width:22px;flex:none}
+.skill .sbody{flex:1;min-width:0} .sname{font-weight:600} .smeta{font-size:13px;color:var(--muted)}
+.due{color:var(--amber);font-weight:600}
+.dots{display:flex;gap:4px;margin-top:7px} .dots i{width:16px;height:6px;border-radius:3px;background:#2a3443} .dots i.f{background:var(--teal)} .dots i.f.g{background:var(--gold)}
+.sact{display:flex;flex-direction:column;gap:6px}
+.plabel{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.ask{color:#c9d4e0;font-size:16px}
+.math{font-family:var(--math);font-size:28px;margin:10px 0 14px;line-height:1.7}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.8em;line-height:1.15;margin:0 .12em}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .2em}
+.ans{width:100%;max-width:340px;background:#0d131b;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px 14px;font:20px var(--math)}
+.ans:focus{outline:none;border-color:var(--gold)}
+.fmt{font-size:12.5px;color:var(--muted);margin:6px 0 12px}
+.confs{display:flex;gap:8px;flex-wrap:wrap}
+.err{color:var(--red);font-size:14px;margin-top:8px}
+.prob.right{border-color:rgba(74,222,128,.5)} .prob.wrong{border-color:rgba(248,113,113,.5)}
+.fb .msg{margin:16px 0 8px;font-size:16px} .prob.right .msg>b{color:var(--green)} .prob.wrong .msg>b{color:var(--red)}
+.warn{margin-top:8px;padding:10px 12px;border-radius:8px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.35);color:#fde68a;font-size:14px}
+.sub{color:var(--muted);font-size:14px;margin-top:4px}
+.steps{font-family:var(--math);font-size:18px;padding-left:26px;margin:10px 0} .steps li{margin:7px 0;padding-left:4px} .steps li::marker{color:var(--gold);font-family:system-ui;font-size:14px}
+.steps li.blank{color:var(--gold2);font-family:system-ui;font-size:15px;font-style:italic}
+.steps li.final{list-style:none;margin-left:-26px;color:var(--gold2)}
+.why{font-family:system-ui;font-size:13px;color:var(--muted)}
+.notelab{display:block;font-size:14px;margin:12px 0} .notelab span{color:var(--muted)}
+textarea.note{display:block;width:100%;margin-top:6px;background:#0d131b;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px 10px;font:14px system-ui;resize:vertical}
+.next{margin-top:12px}
+.clsq{font-size:14px;color:var(--muted);margin-bottom:8px} .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.chip{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:7px 13px;cursor:pointer;font:14px system-ui}
+.chip:hover:not(:disabled){border-color:var(--teal)} .chip.ok{border-color:var(--green);color:var(--green)} .chip.no{border-color:var(--red);color:var(--red);text-decoration:line-through}
+.clsr{font-size:14px;margin:4px 0 14px;color:var(--muted)}
+.flowhead{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 0 4px}
+.ftitle{font-family:Georgia,serif;font-size:20px}
+.stepper{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap} .stepper span{font-size:12px;padding:4px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)} .stepper span.cur{border-color:var(--gold);color:var(--gold2)} .stepper span.done{color:var(--teal);border-color:rgba(79,209,197,.4)}
+.note{background:rgba(79,209,197,.07);border:1px solid rgba(79,209,197,.3);border-radius:10px;padding:10px 14px;font-size:14.5px;margin-top:12px}
+.concept p{margin:.6em 0} .concept ol,.concept ul{margin:.4em 0;padding-left:22px} .concept li{margin:.25em 0}
+.ex{font-family:var(--math);font-size:1.12em}
+.ns{margin-top:16px;padding:12px 14px;border-left:3px solid var(--gold);background:rgba(233,185,73,.06);border-radius:0 10px 10px 0;font-size:14.5px}
+.ns span.h{display:block;font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.hint{color:var(--muted);font-size:14px;font-style:italic}
+.progress{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:8px} .progress div{height:100%;background:var(--gold);transition:width .3s}
+.pcount{font-size:12px;color:var(--muted);text-align:right;margin-top:4px}
+.center{text-align:center} .seal{width:64px;height:64px;margin:6px auto 10px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--teal);color:var(--teal);font-size:28px}
+.seal.gold{border-color:var(--gold);color:var(--gold2);width:90px;height:90px;font-family:Georgia,serif;font-size:36px}
+table.cal{width:100%;border-collapse:collapse;font-size:14px} table.cal td{padding:6px 0;border-bottom:1px solid var(--line)} table.cal td:last-child{text-align:right;color:var(--muted)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;width:90px;display:inline-block;vertical-align:middle;margin-right:8px} .bar i{display:block;height:100%;background:var(--teal)}
+.up{color:var(--green)} .down{color:var(--red)}
+ul.chg{padding-left:18px} ul.chg li{margin:4px 0}
+.rank{display:flex;gap:16px;align-items:flex-start}
+.rank .badge{width:54px;height:54px;font-size:19px}
+.rank.lock .badge{border-color:var(--line);color:var(--muted);box-shadow:none}
+.rank .rname{font-family:Georgia,serif;font-size:20px} .rank .rtheme{color:var(--teal);font-size:14px;margin-bottom:4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px} .tags span{font-size:12.5px;padding:3px 9px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:#c9d4e0}
+.card.target{border-color:var(--gold);box-shadow:0 0 30px rgba(233,185,73,.08)}
+.pill{display:inline-block;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--gold);color:var(--gold2);margin-left:8px;vertical-align:middle}
+.nsbox{text-align:center;padding:18px;border:1px solid var(--line);border-radius:12px;background:#0d131b;margin:12px 0}
+.nseq{font-family:var(--math);font-size:24px;line-height:2.1}
+.vec{font-weight:700}
+.jrow{border-bottom:1px solid var(--line);padding:14px 0} .jrow:last-child{border:0}
+.jq{font-family:var(--math);font-size:18px;margin:4px 0}
+.jnote{margin-top:6px;padding:6px 10px;border-left:2px solid var(--teal);color:#c9d4e0;font-size:14px}
+.sci h4{margin:0 0 2px;font-size:17px} .sci .cite{font-size:12.5px;color:var(--teal)} .sci p{margin:.4em 0;font-size:14.5px}
+.sci .does{font-size:14px;color:#c9d4e0;background:var(--panel2);border-radius:8px;padding:8px 12px;margin-top:6px}
+label.tog{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+footer{max-width:980px;margin:0 auto;padding:0 18px 30px;color:var(--muted);font-size:12.5px}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <div class="brand"><span class="sig">∇</span> Math Ascent</div>
+  <nav class="nav">
+    <button data-r="home">Home</button>
+    <button data-r="road">Roadmap</button>
+    <button data-r="journal">Error journal</button>
+    <button data-r="science">The science</button>
+    <button data-r="settings">Settings</button>
+  </nav>
+</div></header>
+<main class="wrap" id="main"></main>
+<footer>Progress is saved in this browser. Back it up from Settings → Export.</footer>
+
+<script>
+'use strict';
+/* ================= helpers ================= */
+const MIN=60e3, HOUR=60*MIN, DAY=24*HOUR;
+const INTERVALS=[0,10*MIN,DAY,3*DAY,7*DAY,16*DAY,35*DAY];
+const BOX_NAMES=['New','Fresh','Forming','Holding','Strong','Durable','Long-term'];
+const MASTERY_BOX=4, MAX_BOX=6, KEY='math-ascent-v1';
+const M='−';
+const ri=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const nz=(a,b)=>{let x;do{x=ri(a,b)}while(x===0);return x};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a};
+const lcm=(a,b)=>Math.abs(a*b)/gcd(a,b);
+const dec=x=>String(+(+x).toFixed(6));
+const N=x=>(x<0?M:'')+dec(Math.abs(x));
+const P=x=>x<0?'('+M+dec(Math.abs(x))+')':dec(x);
+function Fr(a,b){if(b<0){a=-a;b=-b}const g=gcd(a,b)||1;return{n:a/g,d:b/g,v:a/b}}
+function fr(a,b){const neg=a!==0&&((a<0)!==(b<0));return(neg?M:'')+`<span class="fr"><span>${Math.abs(a)}</span><span>${Math.abs(b)}</span></span>`}
+const FH=f=>f.d===1?N(f.n):fr(f.n,f.d);
+const frX=a=>`<span class="fr"><span><i>x</i></span><span>${a}</span></span>`;
+const X='<i>x</i>', Y='<i>y</i>', X2='<i>x</i><sup>2</sup>';
+function term(c,v,first){const m=Math.abs(c),body=(v&&m===1)?v:dec(m)+v;return first?(c<0?M:'')+body:(c<0?` ${M} `:' + ')+body}
+function poly(ts){let o='',f=true;for(const[c,v]of ts){if(c===0)continue;o+=term(c,v,f);f=false}return o||'0'}
+const signNote=(b,c)=>((b<0)===(c<0))?'same signs → positive':'different signs → negative';
+function simplifyStep(n,d){const f=Fr(n,d),g=gcd(n,d);return g>1?`Simplify (divide top and bottom by ${g}): ${FH(f)}`:`Already in lowest terms: ${FH(f)}`}
+const isPow=(d,b)=>{while(d>1&&d%b===0)d/=b;return d===1};
+const logb=(b,a)=>`log<sub>${b}</sub>(${a})`;
+const A={n:v=>({type:'num',v,html:N(v)}),f:f=>({type:'num',v:f.v,html:FH(f)}),pair:(a,b,ordered,html)=>({type:'pair',vals:[a,b],ordered,html})};
+
+function parseNum(s){
+  s=String(s).trim().replace(/[−–—]/g,'-').replace(/\s+/g,'').replace(/%$/,'').replace(/^[a-z]=/i,'');
+  if(!s)return NaN;
+  const m=s.match(/^([+-]?\d*\.?\d+)\/([+-]?\d*\.?\d+)$/);
+  if(m){const d=parseFloat(m[2]);return d===0?NaN:parseFloat(m[1])/d}
+  if(/^[+-]?(\d+\.?\d*|\.\d+)$/.test(s))return parseFloat(s);
+  return NaN;
+}
+function parseList(s){return String(s).split(/,|;|\band\b|\bor\b/i).map(t=>t.trim()).filter(Boolean).map(parseNum)}
+function close(a,b,loose){const tol=(loose?5e-4:1e-9)*Math.max(1,Math.abs(b));return Math.abs(a-b)<=tol}
+
+/* ================= the nine Master skills ================= */
+const SKILLS=[
+{id:'order',short:'Signs & order',name:'Signs & Order of Operations',
+desc:'The grammar of arithmetic: negatives, brackets, powers.',
+concept:`<p>Arithmetic has grammar. Every expression is read in the same order:</p>
+<ol><li><b>Brackets</b></li><li><b>Powers</b></li><li><b>× and ÷</b>, left to right</li><li><b>+ and −</b>, left to right</li></ol>
+<p><b>Sign rules.</b> Same signs multiply to <b>+</b>, different signs to <b>−</b>. Subtracting a negative is adding: <span class="ex">5 − (−3) = 8</span>.</p>
+<p><b>The trap that catches everyone.</b> <span class="ex">−3<sup>2</sup> = −9</span>, because the power grabs only the 3. But <span class="ex">(−3)<sup>2</sup> = 9</span>. Every textbook, calculator and physics formula follows this rule.</p>`,
+ns:`Navier–Stokes is a balance of signed terms: pressure pushing one way, viscosity dragging the other. One flipped sign turns a correct equation into nonsense. This is the floor everything else stands on.`,
+gen(){const v=ri(0,3);
+ if(v===0){const a=ri(-15,15),b=nz(-9,9),c=nz(-9,9),bc=b*c,ans=a-bc;
+  return{ask:'Evaluate',math:`${N(a)} − ${P(b)} × ${P(c)}`,ans:A.n(ans),steps:[
+   `Multiplication before subtraction: ${P(b)} × ${P(c)} = ${N(bc)} <span class="why">(${signNote(b,c)})</span>`,
+   `${N(a)} − ${P(bc)} = ${N(ans)}`+(bc<0?` <span class="why">(subtracting a negative = adding)</span>`:'')]}}
+ if(v===1){const k=ri(2,9),m=ri(2,9),ans=-k*k+m*m;
+  return{ask:'Evaluate',math:`${M}${k}<sup>2</sup> + (${M}${m})<sup>2</sup>`,ans:A.n(ans),steps:[
+   `${M}${k}<sup>2</sup> means ${M}(${k}<sup>2</sup>) = ${N(-k*k)} <span class="why">(the power binds tighter than the minus)</span>`,
+   `(${M}${m})<sup>2</sup> = (${M}${m}) × (${M}${m}) = ${m*m}`,
+   `${N(-k*k)} + ${m*m} = ${N(ans)}`]}}
+ if(v===2){const b=pick([-6,-5,-4,-3,-2,2,3,4,5,6]),q=nz(-9,9),a=b*q,c=nz(-7,7),d=nz(-7,7),cd=c*d,ans=q+cd;
+  return{ask:'Evaluate',math:`${N(a)} ÷ ${P(b)} + ${P(c)} × ${P(d)}`,ans:A.n(ans),steps:[
+   `÷ and × first, left to right: ${N(a)} ÷ ${P(b)} = ${N(q)}`,
+   `${P(c)} × ${P(d)} = ${N(cd)}`,
+   `${N(q)} + ${P(cd)} = ${N(ans)}`]}}
+ const a=ri(-8,8),b=ri(-8,8),c=nz(-6,6),d=nz(-6,6),s=a-b,ans=s*s-c*d;
+ return{ask:'Evaluate',math:`(${N(a)} − ${P(b)})<sup>2</sup> − ${P(c)} × ${P(d)}`,ans:A.n(ans),steps:[
+  `Brackets: ${N(a)} − ${P(b)} = ${N(s)}`,`Power: ${P(s)}<sup>2</sup> = ${s*s}`,
+  `Multiply: ${P(c)} × ${P(d)} = ${N(c*d)}`,`${s*s} − ${P(c*d)} = ${N(ans)}`]}}},
+
+{id:'fractions',short:'Fractions',name:'Fractions',
+desc:'Add, multiply, divide and simplify without fear.',
+concept:`<p>A fraction <span class="fr"><span><i>a</i></span><span><i>b</i></span></span> is just the number <i>a ÷ b</i>. Three moves cover everything:</p>
+<ul><li><b>Add / subtract:</b> rewrite both over a common denominator (lowest common multiple), then combine the tops. <span class="ex">${fr(1,4)} + ${fr(1,6)} = ${fr(3,12)} + ${fr(2,12)} = ${fr(5,12)}</span></li>
+<li><b>Multiply:</b> top × top, bottom × bottom. Cancel common factors first to keep numbers small.</li>
+<li><b>Divide:</b> flip the second fraction and multiply. <span class="ex">${fr(2,3)} ÷ ${fr(4,5)} = ${fr(2,3)} × ${fr(5,4)} = ${fr(10,12)} = ${fr(5,6)}</span></li></ul>
+<p>Always finish in lowest terms: divide top and bottom by their greatest common divisor.</p>`,
+ns:`The Reynolds number Re = ρUL/μ is a fraction, and non-dimensionalising Navier–Stokes means dividing every term by a reference scale. Fraction fluency is how you see which term dominates a flow.`,
+gen(){const v=ri(0,2);
+ if(v===0){let b,d;do{b=ri(2,12);d=ri(2,12)}while(b===d);const a=ri(1,11),c=ri(1,11),plus=Math.random()<.5,op=plus?'+':M;
+  const L=lcm(b,d),Aa=a*L/b,C=c*L/d,num=plus?Aa+C:Aa-C,f=Fr(num,L);
+  return{ask:'Calculate (give an exact fraction)',math:`${fr(a,b)} ${op} ${fr(c,d)}`,ans:A.f(f),steps:[
+   `Lowest common denominator of ${b} and ${d}: ${L}`,
+   `Rewrite: ${fr(a,b)} = ${fr(Aa,L)}, &nbsp; ${fr(c,d)} = ${fr(C,L)}`,
+   `Combine the tops: ${Aa} ${op} ${C} = ${N(num)}, giving ${fr(num,L)}`,simplifyStep(num,L)]}}
+ if(v===1){const a=ri(1,12),c=ri(1,12),b=ri(2,12),d=ri(2,12),f=Fr(a*c,b*d);
+  return{ask:'Calculate (give an exact fraction)',math:`${fr(a,b)} × ${fr(c,d)}`,ans:A.f(f),steps:[
+   `Top × top, bottom × bottom: ${fr(a*c,b*d)} <span class="why">(pro move: cancel common factors before multiplying)</span>`,simplifyStep(a*c,b*d)]}}
+ const a=ri(1,12),c=ri(1,12),b=ri(2,12),d=ri(2,12),f=Fr(a*d,b*c);
+ return{ask:'Calculate (give an exact fraction)',math:`${fr(a,b)} ÷ ${fr(c,d)}`,ans:A.f(f),steps:[
+  `Dividing by a fraction = multiplying by its reciprocal: ${fr(a,b)} × ${fr(d,c)}`,
+  `Multiply across: ${fr(a*d,b*c)}`,simplifyStep(a*d,b*c)]}}},
+
+{id:'percent',short:'Percent & ratio',name:'Percentages & Ratios',
+desc:'Think in multipliers, not additions.',
+concept:`<p><b>Percent means "per hundred"</b>: 35% = 0.35. The power move is to think in <b>multipliers</b>:</p>
+<ul><li>Increase by 20% → multiply by 1.2. Decrease by 20% → multiply by 0.8.</li>
+<li>Two changes in a row <b>multiply</b>, they don't add: +20% then −20% is 1.2 × 0.8 = 0.96, a 4% loss.</li>
+<li>Undoing a change means <b>dividing</b> by the multiplier, not subtracting the percent.</li></ul>
+<p><b>Ratios:</b> splitting in the ratio 3 : 5 means 8 equal parts. Find one part, then scale.</p>`,
+ns:`Physics runs on ratios. The Reynolds number is the ratio of inertial to viscous forces, and it alone decides whether a flow is smooth or turbulent. Thinking in multipliers is exactly how scaling arguments work.`,
+gen(){const v=ri(0,4);
+ if(v===0){const p=pick([5,10,12.5,15,20,25,30,40,60,75,120,150]),n=ri(2,40)*pick([4,8,10,20]),ans=p*n/100;
+  return{ask:'Calculate',math:`${p}% of ${n}`,ans:A.n(ans),steps:[`${p}% = ${p}/100 = ${dec(p/100)}`,`${dec(p/100)} × ${n} = ${dec(ans)}`]}}
+ if(v===1){const pct=pick([5,10,15,20,25,30,40,45,60,75,80,120,150]),Yv=ri(1,20)*20,Xv=pct*Yv/100;
+  return{ask:`${dec(Xv)} is what percent of ${Yv}?`,math:'',ans:A.n(pct),fmt:'A number — the % sign is optional',steps:[
+   `Fraction of the whole: ${dec(Xv)} ÷ ${Yv} = ${dec(Xv/Yv)}`,`Multiply by 100: ${pct}%`]}}
+ if(v===2){const p=pick([10,20,25,30,40,50]),up=1+p/100,dn=1-p/100,net=up*dn,ans=-p*p/100;
+  return{ask:`A price rises by ${p}%, then falls by ${p}%. What is the overall percent change? (Negative = decrease.)`,math:'',ans:A.n(ans),fmt:'A number — e.g. -3 for a 3% decrease',steps:[
+   `Rising ${p}% multiplies by ${dec(up)}; falling ${p}% multiplies by ${dec(dn)}`,
+   `Net multiplier: ${dec(up)} × ${dec(dn)} = ${dec(net)}`,
+   `${dec(net)} − 1 = ${N(net-1)}, which is ${N(ans)}% <span class="why">(not 0% — the fall is taken from a bigger number)</span>`]}}
+ if(v===3){let a,b;do{a=ri(1,9);b=ri(1,9)}while(a===b||gcd(a,b)!==1);const k=ri(2,15),T=(a+b)*k,ans=Math.max(a,b)*k;
+  return{ask:`Split ${T} in the ratio ${a} : ${b}. What is the larger share?`,math:'',ans:A.n(ans),steps:[
+   `Total parts: ${a} + ${b} = ${a+b}`,`One part: ${T} ÷ ${a+b} = ${k}`,`Larger share: ${Math.max(a,b)} × ${k} = ${ans}`]}}
+ const p=pick([10,20,25,50,60]),orig=ri(2,40)*10,mult=1+p/100,Pv=orig*mult;
+ return{ask:`After a ${p}% increase, a price is ${dec(Pv)}. What was the original price?`,math:'',ans:A.n(orig),steps:[
+  `A ${p}% increase means: new = original × ${dec(mult)}`,
+  `<span class="why">Trap: subtracting ${p}% of ${dec(Pv)} gives ${dec(Pv*(1-p/100))} — wrong, because the ${p}% was taken of the original, not the new price.</span>`,
+  `Original = ${dec(Pv)} ÷ ${dec(mult)} = ${orig}`]}}},
+
+{id:'exponents',short:'Exponents',name:'Exponents & Roots',
+desc:'Powers, negative powers, fractional powers.',
+concept:`<p>An exponent counts repeated multiplication: <span class="ex">x<sup>3</sup> = x·x·x</span>. Every rule follows from that:</p>
+<ul class="ex"><li>x<sup>a</sup> · x<sup>b</sup> = x<sup>a+b</sup></li><li>x<sup>a</sup> ÷ x<sup>b</sup> = x<sup>a−b</sup></li><li>(x<sup>a</sup>)<sup>b</sup> = x<sup>ab</sup></li><li>x<sup>0</sup> = 1, &nbsp; x<sup>−n</sup> = 1 / x<sup>n</sup></li><li>x<sup>p/q</sup> = (<sup>q</sup>√x)<sup>p</sup> &nbsp;<span class="why">root first, then power</span></li></ul>
+<p>Don't memorise these as a list. If you forget one, write out x·x·x and re-derive it in ten seconds — that's the real skill.</p>`,
+ns:`Units like m·s<sup>−2</sup> are exponent arithmetic. Drag grows like U<sup>2</sup>, and Kolmogorov's turbulence spectrum falls like k<sup>−5/3</sup>. At the top ranks you'll read these at a glance.`,
+gen(){const v=ri(0,3);
+ if(v===0){const m=ri(-4,9),n=ri(-4,9),k=ri(-4,9),ans=m+n-k;
+  return{ask:'Find the missing exponent',math:`${X}<sup>${N(m)}</sup> · ${X}<sup>${N(n)}</sup> ÷ ${X}<sup>${N(k)}</sup> = ${X}<sup>?</sup>`,ans:A.n(ans),steps:[
+   `Multiplying same base → add exponents: ${N(m)} + ${P(n)} = ${N(m+n)}`,`Dividing → subtract: ${N(m+n)} − ${P(k)} = ${N(ans)}`]}}
+ if(v===1){const a=nz(-4,5),b=ri(2,4),c=ri(-6,6),ans=a*b+c;
+  return{ask:'Simplify to a single power of x. What is the exponent?',math:`(${X}<sup>${N(a)}</sup>)<sup>${b}</sup> · ${X}<sup>${N(c)}</sup>`,ans:A.n(ans),steps:[
+   `Power of a power → multiply: ${N(a)} × ${b} = ${N(a*b)}`,`Multiplying → add: ${N(a*b)} + ${P(c)} = ${N(ans)}`]}}
+ if(v===2){const b=pick([2,3,4,5,10]),n=ri(1,{2:5,3:4,4:3,5:3,10:3}[b]),f=Fr(1,b**n);
+  return{ask:'Evaluate (exact fraction)',math:`${b}<sup>${M}${n}</sup>`,ans:A.f(f),steps:[
+   `A negative exponent means reciprocal: ${b}<sup>${M}${n}</sup> = 1 / ${b}<sup>${n}</sup>`,`${b}<sup>${n}</sup> = ${b**n}, so the answer is ${fr(1,b**n)}`]}}
+ const q=pick([2,3]),r=q===2?ri(2,9):ri(2,4),p=q===2?pick([1,3]):pick([1,2]),base=r**q,val=r**p,neg=Math.random()<.3;
+ const steps=[`Denominator ${q} → take the ${q===2?'square':'cube'} root: ${q===2?'√':'∛'}${base} = ${r}`,`Numerator ${p} → raise to the power: ${r}<sup>${p}</sup> = ${val}`];
+ if(neg)steps.push(`The minus sign → reciprocal: ${fr(1,val)}`);
+ return{ask:'Evaluate',math:`${base}<sup>${neg?M:''}${p}/${q}</sup>`,ans:A.f(neg?Fr(1,val):Fr(val,1)),steps}}},
+
+{id:'linear',short:'Linear equations',name:'Linear Equations',
+desc:'Keep the balance; isolate x.',
+concept:`<p>An equation is a balance. Whatever you do to one side, do to the other. The standard sequence:</p>
+<ol><li>Expand brackets (or divide them away)</li><li>Collect x-terms on one side, plain numbers on the other</li><li>Divide by the coefficient of x</li></ol>
+<p><b>Always check</b> by substituting your answer back in. It takes five seconds and catches most sign slips.</p>`,
+ns:`Computers solve Navier–Stokes by chopping space into a grid and turning the equation into thousands of linear equations. The "keep the balance" idea scales all the way up.`,
+gen(){const v=ri(0,2);
+ if(v===0){const x=ri(-9,9),a=nz(-9,9);let c;do{c=nz(-9,9)}while(c===a);const b=ri(-15,15),d=(a-c)*x+b;
+  return{ask:'Solve for x',math:`${poly([[a,X],[b,'']])} = ${poly([[c,X],[d,'']])}`,ans:A.n(x),steps:[
+   `Collect x on the left, numbers on the right: (${N(a)} − ${P(c)})${X} = ${N(d)} − ${P(b)}`,
+   `${poly([[a-c,X]])} = ${N(d-b)}`,`${X} = ${N(d-b)} ÷ ${P(a-c)} = ${N(x)}`]}}
+ if(v===1){let a;do{a=nz(-9,9)}while(Math.abs(a)<2);const b=nz(-9,9),x=ri(-9,9),c=a*(x+b);
+  return{ask:'Solve for x',math:`${N(a)}(${poly([[1,X],[b,'']])}) = ${N(c)}`,ans:A.n(x),steps:[
+   `Divide both sides by ${N(a)}: ${poly([[1,X],[b,'']])} = ${N(c/a)}`,`${X} = ${N(c/a)} − ${P(b)} = ${N(x)}`]}}
+ const a=ri(2,9),x=a*ri(-9,9),b=nz(-10,10),c=x/a+b;
+ return{ask:'Solve for x',math:`${frX(a)}${b>0?' + '+b:' '+M+' '+(-b)} = ${N(c)}`,ans:A.n(x),steps:[
+  `Undo the ${b>0?'+':M}${Math.abs(b)}: ${frX(a)} = ${N(c)} − ${P(b)} = ${N(c-b)}`,`Multiply both sides by ${a}: ${X} = ${N(c-b)} × ${a} = ${N(x)}`]}}},
+
+{id:'slope',short:'Lines & slope',name:'Lines & Rate of Change',
+desc:'Slope is the seed of calculus.',
+concept:`<p>Slope measures <b>rate of change</b>: how much y moves for each 1-unit step in x.</p>
+<p class="ex">m = (y₂ − y₁) / (x₂ − x₁) = rise / run</p>
+<ul><li>A line is <span class="ex">y = mx + b</span>: <i>m</i> is the slope, <i>b</i> is where it crosses the y-axis (the value at x = 0).</li>
+<li>Know the rate and one point, and you know every point: walk along at rate m.</li>
+<li>Perpendicular lines have slopes that multiply to −1: flip the fraction, change the sign.</li></ul>
+<p>Calculus is this exact idea applied to curves — the derivative is the slope at a single point.</p>`,
+ns:`Every term in Navier–Stokes is a rate of change: ∂<b>u</b>/∂t is how fast velocity changes in time. A derivative is just the slope of a curve at a point. Own slope now and calculus will feel natural.`,
+gen(){const v=ri(0,3);
+ if(v===0){let x1,x2;do{x1=ri(-8,8);x2=ri(-8,8)}while(x1===x2);const y1=ri(-9,9),y2=ri(-9,9),f=Fr(y2-y1,x2-x1);
+  return{ask:'Find the slope of the line through',math:`(${N(x1)}, ${N(y1)}) and (${N(x2)}, ${N(y2)})`,ans:A.f(f),steps:[
+   `Slope = rise / run = (y₂ − y₁) / (x₂ − x₁)`,`= (${N(y2)} − ${P(y1)}) / (${N(x2)} − ${P(x1)}) = ${fr(y2-y1,x2-x1)}`,simplifyStep(y2-y1,x2-x1)]}}
+ if(v===1){const m=nz(-5,5),b=ri(-10,10);let x1,x2;do{x1=ri(-6,6);x2=ri(-6,6)}while(x1===x2);const y1=m*x1+b,y2=m*x2+b;
+  return{ask:'Find the y-intercept b of the line through',math:`(${N(x1)}, ${N(y1)}) and (${N(x2)}, ${N(y2)})`,ans:A.n(b),steps:[
+   `Slope: (${N(y2)} − ${P(y1)}) / (${N(x2)} − ${P(x1)}) = ${N(m)}`,
+   `Plug (${N(x1)}, ${N(y1)}) into y = ${N(m)}x + b: ${N(y1)} = ${N(m)} × ${P(x1)} + b = ${N(m*x1)} + b`,
+   `b = ${N(y1)} − ${P(m*x1)} = ${N(b)}`]}}
+ if(v===2){const m=nz(-5,5),b=ri(-10,10);let p,r,t;do{p=ri(-6,8);r=ri(-6,8);t=ri(-6,8)}while(p===r||p===t||r===t);const q=m*p+b,s=m*r+b,ans=m*t+b;
+  return{ask:`A linear function has f(${N(p)}) = ${N(q)} and f(${N(r)}) = ${N(s)}. Find f(${N(t)}).`,math:'',ans:A.n(ans),steps:[
+   `Rate of change: (${N(s)} − ${P(q)}) / (${N(r)} − ${P(p)}) = ${N(m)} per unit of x`,
+   `From x = ${N(p)} to x = ${N(t)} is ${N(t-p)} units, so f changes by ${N(m)} × ${P(t-p)} = ${N(m*(t-p))}`,
+   `f(${N(t)}) = ${N(q)} + ${P(m*(t-p))} = ${N(ans)}`]}}
+ const a=nz(-6,6),b=ri(1,6),f=Fr(a,b),c=ri(-9,9),perp=Fr(-f.d,f.n);
+ const lhs=f.d===1?poly([[f.n,X],[c,'']]):(f.n<0?M:'')+fr(Math.abs(f.n),f.d)+X+(c===0?'':(c>0?' + '+c:` ${M} `+(-c)));
+ return{ask:'What is the slope of any line perpendicular to',math:`y = ${lhs}`,ans:A.f(perp),steps:[
+  `Perpendicular slopes multiply to −1: flip the fraction and change the sign`,`Slope here is ${FH(f)} → perpendicular slope is ${FH(perp)}`]}}},
+
+{id:'quadratics',short:'Quadratics',name:'Quadratics',
+desc:'Factor, complete the square, read the discriminant.',
+concept:`<p>A quadratic <span class="ex">ax<sup>2</sup> + bx + c</span> draws a parabola. Three tools:</p>
+<ul><li><b>Factoring.</b> For x<sup>2</sup> + bx + c, find two numbers that <i>multiply</i> to c and <i>add</i> to b. Then: if A·B = 0, then A = 0 or B = 0.</li>
+<li><b>Completing the square.</b> <span class="ex">x<sup>2</sup> + bx = (x + b/2)<sup>2</sup> − (b/2)<sup>2</sup></span>. This reveals the vertex — the lowest (or highest) point.</li>
+<li><b>Discriminant</b> D = b<sup>2</sup> − 4ac. D &gt; 0: two real roots. D = 0: one. D &lt; 0: none — the curve never touches the x-axis.</li></ul>
+<p>The quadratic formula <span class="ex">x = (−b ± √D) / 2a</span> is just completing the square done once, in general.</p>`,
+ns:`Fluid flowing through a pipe has a parabolic velocity profile (Poiseuille flow) — one of the few exact solutions of Navier–Stokes. And the (<b>u</b>·∇)<b>u</b> term is quadratic in velocity: that nonlinearity is exactly what makes the equation hard.`,
+gen(){const v=ri(0,3);
+ const fac=(r1,r2)=>`(${poly([[1,X],[-r1,'']])})(${poly([[1,X],[-r2,'']])})`;
+ const pairHtml=(r1,r2)=>`${X} = ${N(r1)} or ${X} = ${N(r2)}`;
+ if(v===0){let r1,r2;do{r1=ri(-9,9);r2=ri(-9,9)}while(r1===r2);const B=-(r1+r2),C=r1*r2;
+  return{ask:'Solve for x',math:`${poly([[1,X2],[B,X],[C,'']])} = 0`,ans:A.pair(r1,r2,false,pairHtml(r1,r2)),steps:[
+   `Find two numbers that multiply to ${N(C)} and add to ${N(B)}: ${N(-r1)} and ${N(-r2)}`,`Factor: ${fac(r1,r2)} = 0`,
+   `A product is zero only if a factor is zero: ${pairHtml(r1,r2)}`]}}
+ if(v===1){const a=pick([2,3,-1,-2]);let r1,r2;do{r1=ri(-6,6);r2=ri(-6,6)}while(r1===r2);
+  return{ask:'Solve for x',math:`${poly([[a,X2],[-a*(r1+r2),X],[a*r1*r2,'']])} = 0`,ans:A.pair(r1,r2,false,pairHtml(r1,r2)),steps:[
+   `Divide everything by ${N(a)}: ${poly([[1,X2],[-(r1+r2),X],[r1*r2,'']])} = 0`,`Factor: ${fac(r1,r2)} = 0`,pairHtml(r1,r2)]}}
+ if(v===2){const h=ri(-6,6),k=ri(-10,10),B=-2*h,C=h*h+k;const sq=h===0?X2:`(${poly([[1,X],[-h,'']])})<sup>2</sup>`;
+  return{ask:'What is the minimum value of y?',math:`y = ${poly([[1,X2],[B,X],[C,'']])}`,ans:A.n(k),steps:[
+   `Complete the square: half of ${N(B)} is ${N(-h)}, so use ${sq}`,
+   `${sq} = ${poly([[1,X2],[B,X],[h*h,'']])}, so y = ${sq} + (${N(C)} − ${h*h}) = ${sq} ${k<0?M+' '+(-k):'+ '+k}`,
+   `A square is never negative, so the minimum is ${N(k)} (reached at x = ${N(h)})`]}}
+ let a,b,c;if(Math.random()<.34){a=pick([1,2,-1,3]);const s=ri(-5,5);b=-2*a*s;c=a*s*s}else{a=nz(-4,4);b=ri(-9,9);c=ri(-9,9)}
+ const D=b*b-4*a*c,ans=D>0?2:D===0?1:0;
+ return{ask:'How many real solutions does this equation have?',math:`${poly([[a,X2],[b,X],[c,'']])} = 0`,ans:A.n(ans),fmt:'0, 1 or 2',steps:[
+  `Discriminant: D = b<sup>2</sup> − 4ac = ${P(b)}<sup>2</sup> − 4 · ${P(a)} · ${P(c)}`,`D = ${b*b} − ${P(4*a*c)} = ${N(D)}`,
+  D>0?`D > 0 → 2 real solutions`:D===0?`D = 0 → exactly 1 (repeated) solution`:`D < 0 → 0 real solutions (the parabola never touches the x-axis)`]}}},
+
+{id:'logs',short:'Logarithms',name:'Logarithms',
+desc:'A log is an exponent in disguise.',
+concept:`<p>A logarithm answers one question: <b>"what exponent?"</b></p>
+<p class="ex">log<sub>b</sub>(x) = y &nbsp;⟺&nbsp; b<sup>y</sup> = x</p>
+<p>So log<sub>2</sub>(8) = 3 because 2<sup>3</sup> = 8. The rules are the exponent rules in disguise:</p>
+<ul class="ex"><li>log(A) + log(B) = log(AB)</li><li>log(A) − log(B) = log(A/B)</li><li>log(A<sup>k</sup>) = k · log(A)</li><li>log<sub>b</sub>(1) = 0</li></ul>
+<p>For awkward bases like log<sub>4</sub>(8), rewrite both numbers as powers of one common base (2<sup>2</sup> and 2<sup>3</sup>).</p>`,
+ns:`Turbulent flow near a wall follows the "log law of the wall", and energy spectra are read on log–log plots. Logs turn multiplicative scaling laws into straight lines you can read.`,
+gen(){const v=ri(0,4);
+ if(v===0){const b=pick([2,3,5,10]),n=ri(-3,{2:6,3:4,5:3,10:4}[b]),argH=n>=0?String(b**n):fr(1,b**(-n));
+  return{ask:'Evaluate',math:logb(b,argH),ans:A.n(n),steps:[
+   `Ask: ${b} to what power gives ${argH}?`,
+   n<0?`${argH} = 1 / ${b}<sup>${-n}</sup> = ${b}<sup>${M}${-n}</sup>`:`${b}<sup>${n}</sup> = ${b**n}`,`So the log is ${N(n)}`]}}
+ if(v===1){let b,n,T,divs;do{b=pick([6,10,12,15]);n=b===10?ri(1,3):ri(1,2);T=b**n;divs=[];for(let d=2;d<T;d++)if(T%d===0&&!isPow(d,b)&&!isPow(T/d,b))divs.push(d)}while(!divs.length);
+  const d=pick(divs),K=T/d;
+  return{ask:'Evaluate',math:`${logb(b,d)} + ${logb(b,K)}`,ans:A.n(n),steps:[
+   `Product rule: log(A) + log(B) = log(A·B)`,`= ${logb(b,`${d} × ${K}`)} = ${logb(b,T)}`,`${T} = ${b}<sup>${n}</sup>, so the answer is ${n}`]}}
+ if(v===2){const b=pick([2,3,5]),n=ri(1,4);let d;do{d=ri(2,9)}while(isPow(d,b));const Av=b**n*d;
+  return{ask:'Evaluate',math:`${logb(b,Av)} − ${logb(b,d)}`,ans:A.n(n),steps:[
+   `Quotient rule: log(A) − log(B) = log(A ÷ B)`,`= ${logb(b,`${Av} ÷ ${d}`)} = ${logb(b,b**n)}`,`${b**n} = ${b}<sup>${n}</sup>, so the answer is ${n}`]}}
+ if(v===3){const b=pick([2,3,4,5,10]),n=ri(-2,3),f=n>=0?Fr(b**n,1):Fr(1,b**(-n));
+  return{ask:'Solve for x',math:`${logb(b,X)} = ${N(n)}`,ans:A.f(f),steps:[
+   `A log is an exponent: ${logb(b,X)} = ${N(n)} means ${b}<sup>${N(n)}</sup> = ${X}`,`${X} = ${FH(f)}`]}}
+ const c=pick([2,3]),p=c===2?pick([2,3]):2;let q;do{q=ri(1,c===2?7:5)}while(q%p===0);
+ return{ask:'Evaluate (exact fraction)',math:logb(c**p,c**q),ans:A.f(Fr(q,p)),steps:[
+  `Write both as powers of ${c}: ${c**p} = ${c}<sup>${p}</sup>, ${c**q} = ${c}<sup>${q}</sup>`,
+  `Looking for y with (${c}<sup>${p}</sup>)<sup>y</sup> = ${c}<sup>${q}</sup>, i.e. ${p}y = ${q}`,`y = ${fr(q,p)}`]}}},
+
+{id:'systems',short:'Systems',name:'Systems of Equations',
+desc:'Two unknowns, two equations — meet the determinant.',
+concept:`<p>Two unknowns need two equations. <b>Elimination</b>: scale the equations so one variable has matching coefficients, subtract to kill it, solve for the other, then substitute back.</p>
+<p>For a₁x + b₁y = c₁ and a₂x + b₂y = c₂, eliminating y always produces:</p>
+<p class="ex">(a₁b₂ − a₂b₁) x = c₁b₂ − c₂b₁</p>
+<p>That number <b>a₁b₂ − a₂b₁</b> is the <b>determinant</b>. If it's 0 the lines are parallel — no unique solution. You'll meet it again as a centrepiece of linear algebra.</p>`,
+ns:`A flow simulation is one giant system A<b>x</b> = <b>b</b> — the pressure step solves for millions of unknowns at once. This is the 2×2 version of the most-run computation in fluid dynamics.`,
+gen(){const x=ri(-7,7),y=ri(-7,7);let a1,b1,a2,b2,det;do{a1=nz(-6,6);b1=nz(-6,6);a2=nz(-6,6);b2=nz(-6,6);det=a1*b2-a2*b1}while(det===0);
+ const c1=a1*x+b1*y,c2=a2*x+b2*y;
+ return{ask:'Solve the system',math:`${poly([[a1,X],[b1,Y]])} = ${N(c1)}<br>${poly([[a2,X],[b2,Y]])} = ${N(c2)}`,
+  ans:A.pair(x,y,true,`${X} = ${N(x)}, ${Y} = ${N(y)}`),fmt:'Type x, y in that order — e.g. 2, -3',steps:[
+  `Eliminate y: multiply equation 1 by ${P(b2)} and equation 2 by ${P(b1)}, then subtract`,
+  `(${N(a1)}·${P(b2)} − ${N(a2)}·${P(b1)})${X} = ${N(c1)}·${P(b2)} − ${N(c2)}·${P(b1)} &nbsp;→&nbsp; ${N(det)}${X} = ${N(c1*b2-c2*b1)}`,
+  `${X} = ${N(c1*b2-c2*b1)} ÷ ${P(det)} = ${N(x)}`,
+  `Back into equation 1: ${N(b1)}${Y} = ${N(c1)} − ${N(a1)}·${P(x)} = ${N(c1-a1*x)}, so ${Y} = ${N(y)}`]}}}
+];
+const SKILL=Object.fromEntries(SKILLS.map(s=>[s.id,s]));
+function gen(id){const p=SKILL[id].gen();p.skill=id;if(!p.fmt)p.fmt=p.ans.type==='num'?'Integer, fraction like 3/4, or decimal':(p.ans.ordered?'Type x, y — e.g. 2, -3':'Both answers, comma-separated — e.g. 4, -1');return p}
+
+const RANKS=[
+ {name:'Master',theme:'Foundations of Algebra',topics:SKILLS.map(s=>s.name),goal:'Fast, error-free algebra. Everything later is algebra wearing a costume.'},
+ {name:'Quasi-Grand Master',theme:'Functions, Trigonometry & Vectors',topics:['Functions, composition, inverses','Exponential growth & decay','Trigonometry & the unit circle','Trig identities','Vectors & the dot product','Complex numbers','Sequences & series','Limits — the intuition'],goal:'Speak the language of functions and directions.'},
+ {name:'Grand Master',theme:'Calculus',topics:['Limits & continuity','Derivatives & their rules','Chain rule','Optimisation & related rates','Integrals as accumulated change','Fundamental theorem of calculus','Substitution & integration by parts','Taylor series'],goal:'Rates of change and accumulation — the engine of all physics.'},
+ {name:'Quasi-Great Grand Master',theme:'Linear Algebra & Multivariable Calculus',topics:['Matrices & Gaussian elimination','Determinants','Eigenvalues & eigenvectors','Partial derivatives','Gradient & directional derivatives','Double & triple integrals','Jacobians & coordinate changes'],goal:'Calculus in 3D space, and the algebra computers actually solve.'},
+ {name:'Great Great Grand Master',theme:'Ordinary Differential Equations',topics:['Separable & linear first-order ODEs','Second-order linear ODEs','Oscillators & damping','Systems of ODEs via eigenvalues','Phase portraits & stability','Numerical methods: Euler, Runge–Kutta'],goal:'Equations whose unknown is an entire function.'},
+ {name:'Great Grand Master',theme:'Vector Calculus & PDEs',topics:['Divergence, curl, Laplacian','Line & surface integrals','Divergence & Stokes theorems','Heat, wave & Laplace equations','Fourier series','Separation of variables','Finite-difference methods'],goal:'Fields that vary in space and time — the exact toolkit of fluids.'},
+ {name:'Quasi-Supreme Grand Master',theme:'The Navier–Stokes Equations',topics:['Continuum hypothesis & material derivative','Conservation of mass → continuity equation','Stress tensor & Newtonian fluids','Deriving Navier–Stokes from F = ma','Non-dimensionalising & the Reynolds number','Exact solutions: Couette, Poiseuille, Stokes problems','Writing your own 2D Navier–Stokes solver'],goal:'Derive it, solve it exactly where possible, and numerically everywhere else.',target:true},
+ {name:'Supreme Grand Master',theme:'The Frontier',topics:['Vorticity dynamics','Boundary layers','Turbulence & Kolmogorov scaling','Spectral & projection CFD methods','Weak solutions','Millennium Prize: existence & smoothness'],goal:'Where known mathematics ends.'}
+];
+const ROMAN=['I','II','III','IV','V','VI','VII','VIII'];
+
+/* ================= state ================= */
+const blankSkill=()=>({learned:false,box:0,due:0,att:0,cor:0});
+function freshState(){return{v:1,skills:Object.fromEntries(SKILLS.map(s=>[s.id,blankSkill()])),journal:[],calib:{guess:[0,0],sure:[0,0],certain:[0,0]},cls:[0,0],exam:{passed:false,date:null,best:0,tries:0},settings:{classify:true}}}
+let st=freshState();
+function load(){let s=null;try{s=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(s&&s.v===1){const f=freshState();st=Object.assign(f,s);for(const sk of SKILLS)if(!st.skills[sk.id])st.skills[sk.id]=blankSkill();st.settings=Object.assign(freshState().settings,st.settings||{})}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function stat(id,r){const s=st.skills[id];s.att++;if(r.ok)s.cor++;save()}
+function review(id,r){const s=st.skills[id],from=s.box;if(r.ok&&r.conf!=='guess')s.box=Math.min(MAX_BOX,s.box+1);else if(!r.ok)s.box=1;s.due=Date.now()+INTERVALS[s.box];save();return{id,from,to:s.box}}
+function fmtIn(ms){if(ms<=0)return'now';const m=ms/MIN;if(m<60)return Math.ceil(m)+' min';const h=ms/HOUR;if(h<24)return Math.round(h)+' h';return Math.round(ms/DAY)+' d'}
+const learnedIds=()=>SKILLS.filter(s=>st.skills[s.id].learned).map(s=>s.id);
+const strongCount=()=>SKILLS.filter(s=>st.skills[s.id].box>=MASTERY_BOX).length;
+
+/* ================= DOM utils ================= */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+function h(html){const t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstElementChild}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const main=()=>$('#main');
+let route='home';
+function nav(r){route=r;$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.r===r));({home:renderHome,road:renderRoad,journal:renderJournal,science:renderScience,settings:renderSettings})[r]();window.scrollTo(0,0)}
+function enterFlow(){route='flow';$$('.nav button').forEach(b=>b.classList.remove('on'));window.scrollTo(0,0)}
+function bindHome(){$$('[data-home]').forEach(b=>b.onclick=()=>nav('home'))}
+function flowHeader(title,steps,cur){return`<div class="flowhead"><button class="link" data-home>← Home</button><div class="ftitle">${title}</div>${steps.length?`<div class="stepper">${steps.map((s,i)=>`<span class="${i<cur?'done':i===cur?'cur':''}">${s}</span>`).join('')}</div>`:''}</div>`}
+
+/* ================= the problem card ================= */
+function problemCard(p,o,onDone){
+  const el=h(`<div class="card prob">
+    <div class="plabel">${o.label||''}</div>
+    <div class="ask">${p.ask}</div>
+    ${p.math?`<div class="math">${p.math}</div>`:'<div style="height:12px"></div>'}
+    ${o.preSteps?`<ol class="steps">${o.preSteps.map(s=>`<li>${s}</li>`).join('')}<li class="blank">Your turn — finish the last step.</li></ol>`:''}
+    <div class="cls"></div>
+    <div class="ansArea"${o.classify?' hidden':''}>
+      <input class="ans" type="text" autocomplete="off" spellcheck="false" placeholder="Your answer">
+      <div class="fmt">${p.fmt} · work on paper, no calculator</div>
+      <div class="confs">
+        <button class="btn ghost" data-c="guess">Check · guessing</button>
+        <button class="btn" data-c="sure">Check · fairly sure</button>
+        <button class="btn ghost" data-c="certain">Check · certain</button>
+      </div>
+      <div class="err"></div>
+    </div>
+    <div class="fb"></div></div>`);
+  const inp=$('.ans',el),area=$('.ansArea',el),fb=$('.fb',el),errEl=$('.err',el);
+  if(o.classify){
+    const opts=shuffle([p.skill,...shuffle(o.pool.filter(id=>id!==p.skill)).slice(0,3)]);
+    const cls=$('.cls',el);
+    cls.innerHTML=`<div class="clsq">First — what kind of problem is this?</div><div class="chips">${opts.map(id=>`<button class="chip" data-id="${id}">${SKILL[id].short}</button>`).join('')}</div>`;
+    $$('.chip',cls).forEach(b=>b.onclick=()=>{
+      const right=b.dataset.id===p.skill;st.cls[1]++;if(right)st.cls[0]++;save();
+      $$('.chip',cls).forEach(c=>{c.disabled=true;if(c.dataset.id===p.skill)c.classList.add('ok');else if(c===b)c.classList.add('no')});
+      cls.insertAdjacentHTML('beforeend',`<div class="clsr">${right?'Spotted it.':`It's <b>${SKILL[p.skill].short}</b>. Recognising the type is half of solving it.`}</div>`);
+      area.hidden=false;inp.focus();
+    });
+  } else setTimeout(()=>inp.focus(),30);
+  $$('.confs button',el).forEach(b=>b.onclick=()=>check(b.dataset.c));
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check('sure')}});
+  let done=false;
+  function check(conf){
+    if(done)return;
+    const raw=inp.value.trim();let ok;const loose=raw.includes('.');
+    if(p.ans.type==='num'){const x=parseNum(raw);if(isNaN(x)){errEl.textContent="Couldn't read that. "+p.fmt+'.';return}ok=close(x,p.ans.v,loose)}
+    else{const xs=parseList(raw);if(xs.length!==2||xs.some(isNaN)){errEl.textContent='Need two numbers. '+p.fmt+'.';return}
+      if(p.ans.ordered)ok=close(xs[0],p.ans.vals[0],loose)&&close(xs[1],p.ans.vals[1],loose);
+      else{const a=[...xs].sort((u,v)=>u-v),b=[...p.ans.vals].sort((u,v)=>u-v);ok=close(a[0],b[0],loose)&&close(a[1],b[1],loose)}}
+    done=true;errEl.textContent='';inp.disabled=true;$$('.confs button',el).forEach(b=>b.disabled=true);
+    if(o.track){st.calib[conf][1]++;if(ok)st.calib[conf][0]++;save()}
+    el.classList.add(ok?'right':'wrong');
+    let msg;
+    if(o.pretest)msg=ok?`<b>Correct — before the lesson.</b> Let's make sure it wasn't luck.`:`<b>Answer: ${p.ans.html}</b><div class="sub">Not expected yet. The attempt itself primes your brain for the lesson that follows.</div>`;
+    else if(ok)msg=conf==='certain'?'<b>Correct — and you knew it.</b>':conf==='sure'?'<b>Correct.</b>':`<b>Correct — but you were guessing.</b><div class="sub">Counts as practice, not a confident recall${o.counts?', so memory strength stays where it is':''}.</div>`;
+    else msg=`<b>Not quite. Answer: ${p.ans.html}</b>`+(conf==='certain'?`<div class="warn"><b>High-confidence error.</b> These are the most fixable mistakes you'll ever make — find the exact step where you went off track (hypercorrection effect).</div>`:conf==='guess'?'<div class="sub">You flagged it as a guess — good calibration.</div>':'');
+    const stepsHtml=`<ol class="steps">${p.steps.map(s=>`<li>${s}</li>`).join('')}</ol>`;
+    const autoSteps=o.stepsMode!=='never'&&!ok&&!o.pretest;
+    const askNote=!ok&&o.journal&&!o.pretest;
+    fb.innerHTML=`<div class="msg">${msg}</div>
+      ${autoSteps?stepsHtml:(o.stepsMode==='never'?'':`<button class="link showsol">Show the solution steps</button><div class="solwrap" hidden>${stepsHtml}</div>`)}
+      ${askNote?`<label class="notelab">In one line: where did it go wrong? <span>(optional — saved to your error journal)</span><textarea rows="2" class="note"></textarea></label>`:''}
+      <div><button class="btn next">Next →</button></div>`;
+    const ss=$('.showsol',fb);if(ss)ss.onclick=()=>{$('.solwrap',fb).hidden=false;ss.remove()};
+    const nb=$('.next',fb),born=Date.now();nb.focus();
+    nb.onclick=()=>{if(Date.now()-born<300)return;
+      if(askNote){const nt=$('.note',fb);st.journal.unshift({t:Date.now(),skill:p.skill,q:p.ask+(p.math?' &nbsp; '+p.math:''),your:raw,ans:p.ans.html,conf,note:nt?nt.value.trim():''});if(st.journal.length>300)st.journal.length=300;save()}
+      onDone({ok,conf})};
+  }
+  return el;
+}
+
+/* ================= home ================= */
+function renderHome(){
+  const now=Date.now(),L=learnedIds(),due=L.filter(id=>st.skills[id].due<=now),strong=strongCount();
+  const nextLearn=SKILLS.find(s=>!st.skills[s.id].learned);
+  const nextDue=L.length?Math.min(...L.map(id=>st.skills[id].due)):null;
+  let today;
+  if(!L.length)today=`<div class="big">0</div><p class="muted">Nothing to review yet. Learn your first skill — it enters your memory schedule straight away.</p>`;
+  else if(due.length)today=`<div class="big">${due.length}</div><p>skill${due.length>1?'s':''} due for review: <span class="muted">${due.map(id=>SKILL[id].short).join(', ')}</span></p><button class="btn" data-act="session">Start review session</button>`;
+  else today=`<div class="big">✓</div><p>All caught up. Next review in <b>${fmtIn(nextDue-now)}</b>.</p><p class="muted small">Practising early doesn't make memories stronger — the gap does the work.</p><button class="btn ghost sm" data-act="extra">Extra mixed practice anyway</button>`;
+  const learnCard=nextLearn?`<div class="plabel">Next lesson</div><h2 style="margin-top:0">${SKILLS.indexOf(nextLearn)+1}. ${nextLearn.name}</h2><p class="muted">${nextLearn.desc} About 8–10 minutes.</p><button class="btn${due.length?' ghost':''}" data-act="learn" data-id="${nextLearn.id}">Begin lesson</button><p class="muted small" style="margin-top:12px">Reviews first, new material second. One or two new lessons a day is plenty.</p>`
+    :`<div class="plabel">Lessons</div><h2 style="margin-top:0">All 9 learned</h2><p class="muted">From here it's about retention. Keep doing reviews when they're due until every skill reaches <b>Strong</b>.</p>`;
+  const skills=SKILLS.map((s,i)=>{const k=st.skills[s.id],unlocked=i===0||st.skills[SKILLS[i-1].id].learned;
+    const state=k.learned?'learned':unlocked?'next':'locked';
+    const dots=Array.from({length:MAX_BOX},(_,j)=>`<i class="${j<k.box?'f':''}${j>=MASTERY_BOX-1?' g':''}"></i>`).join('');
+    const acc=k.att?Math.round(100*k.cor/k.att)+'% of '+k.att:'';
+    const meta=k.learned?`${BOX_NAMES[k.box]} · ${k.due<=now?'<span class="due">due now</span>':'review in '+fmtIn(k.due-now)}${acc?' · '+acc:''}`:unlocked?'Ready to learn':'Locked — learn the previous skill first';
+    const acts=k.learned?`<button class="btn ghost sm" data-act="lesson" data-id="${s.id}">Lesson</button><button class="btn ghost sm" data-act="drill" data-id="${s.id}">Drill</button>`:unlocked?`<button class="btn sm" data-act="learn" data-id="${s.id}">Learn</button>`:'';
+    return`<div class="skill ${state}"><div class="sn">${i+1}</div><div class="sbody"><div class="sname">${s.name}</div><div class="smeta">${meta}</div>${k.learned?`<div class="dots" title="Memory strength">${dots}</div>`:''}</div><div class="sact">${acts}</div></div>`}).join('');
+  const cal=['guess','sure','certain'].map(c=>{const[a,t]=st.calib[c];const pc=t?Math.round(100*a/t):null;return`<tr><td>${{guess:'Guessing',sure:'Fairly sure',certain:'Certain'}[c]}</td><td><span class="bar"><i style="width:${pc||0}%"></i></span>${pc===null?'—':pc+'% right'}</td><td>${t} answers</td></tr>`}).join('');
+  const [cc,ct]=st.calib.certain,[gc,gt]=st.calib.guess;let calMsg='Rate your confidence honestly on every answer. Over time this shows whether you know what you know.';
+  if(ct>=6&&cc/ct<.9)calMsg='<b>You\'re overconfident when "certain".</b> Slow down and verify before choosing it.';
+  else if(gt>=6&&gc/gt>.75)calMsg='<b>Your guesses are usually right.</b> You know more than you think — trust it.';
+  else if(ct>=6)calMsg='When you say "certain", you\'re almost always right. That\'s real knowledge.';
+  const ex=st.exam,canExam=strong===SKILLS.length&&!ex.passed;
+  const trial=ex.passed?`<div class="plabel">Promotion trial</div><h2 style="margin-top:0">Master — earned</h2><p class="muted">Passed on ${new Date(ex.date).toLocaleDateString()}. Keep reviews going: a rank you can't still perform isn't worth much.</p>`
+   :`<div class="plabel">Promotion trial</div><h2 style="margin-top:0">${strong} / ${SKILLS.length} skills Strong</h2><p class="muted small">18 mixed questions, no hints, need 16. Unlocks when every skill reaches <b>Strong</b> (4 gold-edged bars). Strength only rises on <i>on-time</i> reviews, so the earliest you can sit it is about 4–5 days in. That's deliberate: it tests memory, not cramming.</p><button class="btn" data-act="exam" ${canExam?'':'disabled'}>Take the trial</button>`;
+  main().innerHTML=`
+  <section class="hero"><div class="badge">${ex.passed?'II':'I'}</div><div><div class="rk">Rank ${ex.passed?'I earned · next: II':'I'}</div><div class="rn">${ex.passed?'Master ✓':'Master'}</div><div class="rt">Foundations of Algebra · nine skills you'll use in every rank up to Navier–Stokes</div></div></section>
+  <div class="grid2"><div class="card"><div class="plabel">Today</div>${today}</div><div class="card">${learnCard}</div></div>
+  <h3>Skills</h3><div class="skills">${skills}</div>
+  <div class="grid2"><div class="card"><div class="plabel">Calibration — do you know what you know?</div><table class="cal">${cal}</table><p class="small" style="margin-bottom:0">${calMsg}</p>${st.cls[1]?`<p class="muted small">Problem-type recognition: ${Math.round(100*st.cls[0]/st.cls[1])}% of ${st.cls[1]}</p>`:''}</div><div class="card">${trial}</div></div>
+  <details class="card"><summary style="cursor:pointer"><b>How this game works</b> <span class="muted small">(read once)</span></summary>
+   <ol class="small" style="margin:12px 0 0;padding-left:20px">
+    <li><b>Lessons</b> go: try a problem cold → short concept + worked example → finish a half-done example → three on your own.</li>
+    <li>Every learned skill enters a <b>memory schedule</b>: back after 10 min, 1 day, 3, 7, 16, 35 days. Each on-time correct answer (not a guess) moves it up one step; a miss sends it back to the start.</li>
+    <li><b>Review sessions mix topics</b> and ask you to name the problem type first. It feels harder than doing ten of the same kind. That difficulty is the learning.</li>
+    <li>Every answer needs a <b>confidence rating</b>. Every miss goes to the <b>error journal</b> with your one-line diagnosis.</li>
+    <li>There's no score to grind. The only number that matters is memory strength — and you can't fake it, because it needs time to pass.</li></ol></details>`;
+  $$('[data-act]').forEach(b=>b.onclick=()=>{const a=b.dataset.act,id=b.dataset.id;
+    if(a==='session')startSession(false);else if(a==='extra')startSession(true);else if(a==='learn')startLearn(id,false);
+    else if(a==='lesson')startLearn(id,true);else if(a==='drill')startDrill(id);else if(a==='exam')startExam()});
+}
+
+/* ================= learn flow ================= */
+function startLearn(id,reviewOnly){
+  enterFlow();const sk=SKILL[id],STEPS=['Pre-test','Concept','Faded example','Practice'],idx=SKILLS.indexOf(sk)+1,m=main();
+  const head=c=>flowHeader(`Lesson ${idx} · ${sk.name}`,STEPS,c);
+  function pre(){
+    m.innerHTML=head(0)+`<div class="note">You haven't been taught this yet. Have a real go anyway — attempting before instruction makes the lesson stick better. Wrong is completely fine here.</div><div id="slot"></div>`;bindHome();
+    $('#slot').append(problemCard(gen(id),{label:'Pre-test',pretest:true,stepsMode:'button'},()=>concept()));
+  }
+  function concept(){
+    const p=gen(id);
+    m.innerHTML=(reviewOnly?flowHeader(`Lesson review · ${sk.name}`,[],-1):head(1))+`
+    <div class="card"><h2>${sk.name}</h2><div class="concept">${sk.concept}</div><div class="ns"><span class="h">On the road to Navier–Stokes</span>${sk.ns}</div></div>
+    <div class="card"><div class="plabel">Worked example</div><div class="ask">${p.ask}</div>${p.math?`<div class="math">${p.math}</div>`:''}
+    <ol class="steps" id="wsteps"></ol>
+    <p class="hint" id="whint">Before each reveal, predict the next step — out loud or on paper. Then check yourself.</p>
+    <button class="btn" id="wbtn">Reveal step 1</button> <button class="btn ghost" id="wnew" hidden>Another example</button></div>`;
+    bindHome();let k=0;const ol=$('#wsteps'),btn=$('#wbtn');
+    $('#wnew').onclick=()=>{concept();window.scrollTo(0,document.body.scrollHeight)};
+    btn.onclick=()=>{
+      if(k<p.steps.length){ol.append(h(`<li>${p.steps[k]}</li>`));k++;
+        if(k===p.steps.length){ol.append(h(`<li class="final">Answer: ${p.ans.html}</li>`));btn.textContent=reviewOnly?'Done — back home':'Next: finish one yourself →';$('#wnew').hidden=false;$('#whint').hidden=true}
+        else btn.textContent=`Reveal step ${k+1}`;return}
+      reviewOnly?nav('home'):faded()};
+  }
+  function faded(){
+    const p=gen(id);
+    m.innerHTML=head(2)+`<div class="note">Same type, new numbers. The steps are done for you — except the last one.</div><div id="slot"></div>`;bindHome();
+    $('#slot').append(problemCard(p,{label:'Faded example',preSteps:p.steps.slice(0,-1),stepsMode:'auto',track:true,journal:true},r=>{stat(id,r);practice(0)}));
+  }
+  function practice(i){
+    if(i>=3)return done();
+    m.innerHTML=head(3)+`<div id="slot"></div>`;bindHome();
+    $('#slot').append(problemCard(gen(id),{label:`Practice ${i+1} of 3 · on your own`,stepsMode:'auto',track:true,journal:true},r=>{stat(id,r);practice(i+1)}));
+  }
+  function done(){
+    const s=st.skills[id];if(!s.learned){s.learned=true;s.box=1;s.due=Date.now()+INTERVALS[1];save()}
+    m.innerHTML=head(4)+`<div class="card center"><div class="seal">✓</div><h2>${sk.name} is in your memory schedule</h2><p>It comes back in <b>10 minutes</b>, then 1 day, 3 days, 7, 16 and 35 — moving up only when you recall it <i>on time</i>.<br>Forgetting a little between reviews is exactly what makes the memory stronger.</p><button class="btn" data-home>Back to home</button></div>`;bindHome();
+  }
+  reviewOnly?concept():pre();
+}
+
+/* ================= review sessions ================= */
+function arrange(pool){
+  const rem=pool.slice(),out=[];let last=null;
+  while(rem.length){
+    const counted=rem.filter(x=>x.counts),pref=counted.length?counted:rem;
+    let cand=pref.filter(x=>x.skill!==last);
+    if(!cand.length)cand=rem.filter(x=>x.skill!==last&&!(!x.counts&&rem.some(y=>y.counts&&y.skill===x.skill)));
+    if(!cand.length)cand=pref;
+    const c=pick(cand);out.push(c);rem.splice(rem.indexOf(c),1);last=c.skill;
+  }
+  return out;
+}
+function buildQueue(extra){
+  const now=Date.now(),L=learnedIds(),due=extra?[]:L.filter(id=>st.skills[id].due<=now),pool=[];
+  due.forEach(id=>{pool.push({skill:id,counts:true});pool.push({skill:id,counts:false})});
+  const others=shuffle(L.filter(id=>!due.includes(id))),src=others.length?others:shuffle(L);
+  let i=0;while(pool.length<8&&src.length){pool.push({skill:src[i%src.length],counts:false});i++}
+  return arrange(pool).slice(0,18);
+}
+function startSession(extra){
+  const q=buildQueue(extra);if(!q.length)return nav('home');
+  enterFlow();const L=learnedIds(),classify=st.settings.classify&&L.length>=3;
+  const log={n:0,ok:0,conf:{guess:[0,0],sure:[0,0],certain:[0,0]},changes:[]};let i=0;
+  function show(){
+    if(i>=q.length)return summary();
+    const it=q[i],p=gen(it.skill);
+    const label=it.retry?'Retry · same type, new numbers':it.counts?'Scheduled review':(extra?'Extra practice':'Interleaved practice');
+    main().innerHTML=flowHeader(extra?'Extra mixed practice':'Review session',[],-1)+`<div class="progress"><div style="width:${100*i/q.length}%"></div></div><div class="pcount">${i+1} / ${q.length}</div><div id="slot"></div>`;
+    bindHome();window.scrollTo(0,0);
+    $('#slot').append(problemCard(p,{label,classify,pool:L,stepsMode:'auto',track:true,journal:true,counts:it.counts},r=>{
+      log.n++;if(r.ok)log.ok++;log.conf[r.conf][1]++;if(r.ok)log.conf[r.conf][0]++;
+      stat(it.skill,r);if(it.counts)log.changes.push(review(it.skill,r));
+      if(!r.ok&&!it.retry)q.splice(Math.min(q.length,i+3),0,{skill:it.skill,counts:false,retry:true});
+      i++;show()}));
+  }
+  function summary(){
+    const pct=log.n?Math.round(100*log.ok/log.n):0;
+    const ch=log.changes.map(c=>`<li>${SKILL[c.id].name}: ${BOX_NAMES[c.from]} → <b>${BOX_NAMES[c.to]}</b> ${c.to>c.from?'<span class="up">▲</span>':c.to<c.from?'<span class="down">▼</span>':'<span class="muted">•</span>'} <span class="muted small">back in ${fmtIn(INTERVALS[c.to])}</span></li>`).join('');
+    const cr=['guess','sure','certain'].filter(c=>log.conf[c][1]).map(c=>`${{guess:'Guessing',sure:'Fairly sure',certain:'Certain'}[c]}: ${log.conf[c][0]}/${log.conf[c][1]}`).join(' · ');
+    main().innerHTML=flowHeader('Session complete',[],-1)+`<div class="card"><div class="big">${pct}%</div><p>${log.ok} of ${log.n} correct. <span class="muted">${cr}</span></p>
+    ${ch?`<h3>Memory changes</h3><ul class="chg">${ch}</ul>`:`<p class="muted">Extra practice doesn't move memory strength — only on-time reviews do. It still sharpens you.</p>`}
+    <p class="muted small">Misses went to your error journal. Re-reading it before your next session is the highest-value two minutes you can spend.</p>
+    <button class="btn" data-home>Back to home</button> <button class="btn ghost" id="toj">Open error journal</button></div>`;
+    bindHome();$('#toj').onclick=()=>nav('journal');
+  }
+  show();
+}
+function startDrill(id){
+  enterFlow();let i=0,ok=0;const sk=SKILL[id];
+  function show(){
+    if(i>=5){main().innerHTML=flowHeader(`Drill · ${sk.name}`,[],-1)+`<div class="card"><div class="big">${ok}/5</div><p>Drilling one type feels smooth, and that smoothness is partly an illusion — it doesn't train you to recognise <i>which</i> method a problem needs. Mixed review sessions are where it sticks. Drill strength isn't counted.</p><button class="btn" data-home>Back to home</button></div>`;return bindHome()}
+    main().innerHTML=flowHeader(`Drill · ${sk.name}`,[],-1)+`<div id="slot"></div>`;bindHome();
+    $('#slot').append(problemCard(gen(id),{label:`Drill ${i+1} of 5 · blocked practice`,stepsMode:'auto',track:true,journal:true},r=>{stat(id,r);if(r.ok)ok++;i++;show()}));
+  }
+  show();
+}
+function startExam(){
+  if(!(strongCount()===SKILLS.length&&!st.exam.passed))return nav('home');
+  enterFlow();const q=arrange(SKILLS.flatMap(s=>[{skill:s.id,counts:false},{skill:s.id,counts:false}]));let i=0,score=0;const missed=new Set();
+  function show(){
+    if(i>=q.length)return finish();
+    main().innerHTML=flowHeader('Promotion trial · Master',[],-1)+`<div class="progress"><div style="width:${100*i/q.length}%"></div></div><div class="pcount">${i+1} / ${q.length} · score ${score}</div><div id="slot"></div>`;bindHome();
+    $('#slot').append(problemCard(gen(q[i].skill),{label:'Trial · no hints',stepsMode:'never',track:true,journal:true},r=>{if(r.ok)score++;else missed.add(q[i].skill);i++;show()}));
+  }
+  function finish(){
+    st.exam.tries++;st.exam.best=Math.max(st.exam.best,score);const pass=score>=16;
+    if(pass){st.exam.passed=true;st.exam.date=Date.now()}
+    else missed.forEach(id=>{const s=st.skills[id];s.box=Math.min(s.box,2);s.due=Date.now()});
+    save();
+    main().innerHTML=flowHeader('Promotion trial',[],-1)+(pass?`<div class="card center"><div class="seal gold">I</div><h2>Rank earned: Master</h2><p>${score}/18 — mixed, unaided, days after you first learned this material. That's real retention.</p><p class="muted">Next is <b>Quasi-Grand Master: Functions, Trigonometry & Vectors</b>. Ask Claude to build it whenever you're ready. Keep your Master reviews going in the meantime.</p><button class="btn" data-home>Back to home</button></div>`
+      :`<div class="card center"><h2>${score}/18 — not yet</h2><p>You need 16. Skills you missed (${[...missed].map(id=>SKILL[id].short).join(', ')}) have dropped back and are due for review now.</p><p class="muted">This isn't a setback — it's the system showing you exactly where the gaps are. Check the error journal, run reviews, and the trial reopens when they're Strong again.</p><button class="btn" data-home>Back to home</button></div>`);
+    bindHome();
+  }
+  show();
+}
+
+/* ================= other views ================= */
+function renderRoad(){
+  const passed=st.exam.passed;
+  main().innerHTML=`<div style="padding:22px 0 0"><h2>The road to Navier–Stokes</h2><p class="muted">Eight ranks. Each one is the language the next one is written in.</p></div>
+  <div class="card target"><div class="plabel">The target — Rank VII</div>
+   <div class="nsbox"><div class="nseq">ρ ( ${'<span class="fr"><span>∂<b class="vec">u</b></span><span>∂t</span></span>'} + (<b class="vec">u</b>·∇)<b class="vec">u</b> ) = −∇p + μ∇<sup>2</sup><b class="vec">u</b> + <b class="vec">f</b></div><div class="nseq">∇·<b class="vec">u</b> = 0</div></div>
+   <p class="small">Newton's F = ma, written for every tiny parcel of fluid: (mass × acceleration) = pressure push + viscous drag + external force, plus "fluid can't appear or vanish".</p>
+   <p class="small muted">Honest note on what "solving" means: there is no general formula. Solving Navier–Stokes means deriving it, solving it exactly for special flows (between plates, through pipes), and solving it numerically on a computer for everything else — which is what engineers and physicists actually do. Rank VII gets you all three. Whether smooth solutions always exist in 3D is an unsolved $1M Millennium Prize problem; Rank VIII shows you that edge.</p></div>
+  ${RANKS.map((r,i)=>{const cur=i===0,lock=i>0&&!(i===1&&passed);return`<div class="card${r.target?' target':''}"><div class="rank${lock?' lock':''}"><div class="badge">${ROMAN[i]}</div><div style="flex:1"><div class="rname">${r.name}${cur?'<span class="pill">'+(passed?'earned':'current')+'</span>':''}${i===1&&passed?'<span class="pill">next — ask Claude to build it</span>':''}${r.target?'<span class="pill">Navier–Stokes</span>':''}</div><div class="rtheme">${r.theme}</div><div class="small muted">${r.goal}</div><div class="tags">${r.topics.map(t=>`<span>${t}</span>`).join('')}</div></div></div></div>`}).join('')}`;
+}
+function renderJournal(){
+  const j=st.journal;
+  main().innerHTML=`<div style="padding:22px 0 0"><h2>Error journal</h2><p class="muted">Every miss, with your diagnosis. Your mistakes are the most personalised curriculum that exists — skim this before each session.</p></div>
+  <div class="card">${j.length?j.map(e=>`<div class="jrow"><div class="small muted">${new Date(e.t).toLocaleString()} · ${SKILL[e.skill]?SKILL[e.skill].short:e.skill} · you were ${{guess:'guessing',sure:'fairly sure',certain:'<span class="due">certain</span>'}[e.conf]||e.conf}</div>
+   <div class="jq">${e.q}</div><div class="small">You wrote <b>${esc(e.your)||'—'}</b> · correct: <b>${e.ans}</b></div>${e.note?`<div class="jnote">${esc(e.note)}</div>`:''}</div>`).join(''):'<p class="muted">Empty so far. It fills up as you practise — that\'s a good thing.</p>'}</div>
+  ${j.length?'<button class="btn danger sm" id="clrj">Clear journal</button>':''}`;
+  const c=$('#clrj');if(c)c.onclick=()=>{if(confirm('Delete all journal entries?')){st.journal=[];save();renderJournal()}};
+}
+function renderScience(){
+  const P=[
+   ['Retrieval practice (the testing effect)','Roediger & Karpicke, 2006','Pulling information out of memory strengthens it far more than re-reading it. Re-reading feels productive; recall actually is.','Every screen makes you produce an answer. Lessons are short so you start recalling within minutes.'],
+   ['Spaced repetition','Cepeda et al., 2006 (meta-analysis of 254 studies); Ebbinghaus, 1885','Practice spread over time beats the same practice crammed together, and the best gap grows as the memory strengthens.','Skills return at 10 min, 1, 3, 7, 16 and 35 days. Practising early is allowed but never counts toward strength.'],
+   ['Interleaving','Rohrer & Taylor, 2007; Rohrer, Dedrick & Stershic, 2015','Mixing problem types beats blocks of one type for maths, because you learn to choose the method, not just execute it. In a classroom study it roughly doubled delayed test scores.','Reviews are shuffled across topics, and you name the problem type before solving.'],
+   ['Worked examples and fading','Sweller & Cooper, 1985; Renkl, Atkinson et al., 2002','Beginners learn more from studying solved examples than from struggling cold — then support should fade step by step.','Each lesson: full worked example → one with the last step blank → fully on your own.'],
+   ['Pretesting','Richland, Kornell & Kao, 2009','Attempting questions before you are taught improves later learning, even when the attempts fail.','Every lesson opens with a cold attempt.'],
+   ['Hypercorrection','Butterfield & Metcalfe, 2001','Errors made with high confidence are, surprisingly, the easiest to correct once you see the right answer.','You rate confidence on every answer; confident errors get flagged and logged.'],
+   ['Self-explanation','Chi et al., 1989','Learners who explain steps to themselves understand and transfer far better than those who just read.','Predict each step before revealing it; write one line diagnosing each miss.'],
+   ['Desirable difficulties','Bjork, 1994','Conditions that make practice feel harder (spacing, mixing, testing) often produce better long-term learning. Performance during practice is a poor guide to learning.','Sessions feel tougher than drilling. That is the design working, not you failing.'],
+   ['The big review','Dunlosky et al., 2013','Of ten popular study techniques, only practice testing and distributed practice earned "high utility". Highlighting and re-reading rated low.','The whole game is built on those two.']];
+  main().innerHTML=`<div style="padding:22px 0 0"><h2>Why it's built this way</h2><p class="muted">Each mechanic comes from research on how memory and skill actually form.</p></div>
+   ${P.map(p=>`<div class="card sci"><h4>${p[0]}</h4><div class="cite">${p[1]}</div><p>${p[2]}</p><div class="does"><b>In the game:</b> ${p[3]}</div></div>`).join('')}`;
+}
+function renderSettings(){
+  main().innerHTML=`<div style="padding:22px 0 0"><h2>Settings</h2></div>
+  <div class="card"><label class="tog"><input type="checkbox" id="cls" ${st.settings.classify?'checked':''}><span><b>Name the problem type first</b><br><span class="muted small">In mixed reviews (once 3+ skills are learned). Trains recognition — recommended on.</span></span></label></div>
+  <div class="card"><b>Back up your progress</b><p class="muted small">Progress lives in this browser only. Export a file to keep it safe or move to another computer.</p>
+   <button class="btn ghost sm" id="exp">Export progress</button> <label class="btn ghost sm" style="display:inline-block">Import progress<input type="file" id="imp" accept=".json,application/json" hidden></label></div>
+  <div class="card"><b>Start over</b><p class="muted small">Erases all skills, history and journal.</p><button class="btn danger sm" id="rst">Reset everything</button></div>`;
+  $('#cls').onchange=e=>{st.settings.classify=e.target.checked;save()};
+  $('#exp').onclick=()=>{const b=new Blob([JSON.stringify(st,null,1)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='math-ascent-progress.json';document.body.append(a);a.click();a.remove()};
+  $('#imp').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(s.v!==1||!s.skills)throw 0;if(confirm('Replace current progress with this file?')){localStorage.setItem(KEY,JSON.stringify(s));load();nav('home')}}catch(err){alert("That file doesn't look like Math Ascent progress.")}};r.readAsText(f)};
+  $('#rst').onclick=()=>{if(confirm('Erase all progress? This cannot be undone.')){st=freshState();save();nav('home')}};
+}
+
+/* ================= boot ================= */
+if(typeof document!=='undefined'&&document.getElementById('main')){
+  load();
+  $$('.nav button').forEach(b=>b.onclick=()=>nav(b.dataset.r));
+  nav('home');
+  setInterval(()=>{if(route==='home'&&document.visibilityState==='visible')renderHome()},60000);
+}
+if(typeof module!=='undefined')module.exports={SKILLS,gen,parseNum,parseList,close};
+</script>
+</body>
+</html>
